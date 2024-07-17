@@ -2,10 +2,23 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
-import { MantineProvider } from '@mantine/core';
+import { MantineProvider,Button } from '@mantine/core';
 import { BrowserRouter } from 'react-router-dom';
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <MantineProvider defaultColorScheme="dark">
+  <MantineProvider defaultColorScheme="dark"
+  theme={{
+    components: {
+      Button: Button.extend({
+        defaultProps: {
+          color: 'cyan',
+          variant: 'filled',
+        },
+      }),
+    },
+   
+    fontFamily: 'Verdana, sans-serif',
+  }}
+  >
     <React.StrictMode>
       <BrowserRouter>
         <App />

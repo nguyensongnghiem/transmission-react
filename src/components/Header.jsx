@@ -16,7 +16,8 @@ function Header({opened,toggle}) {
       <Flex justify='space-between' align='center' style={{ padding: '10px 20px' }} >
         <Burger opened={opened} onClick={toggle} hiddenFrom='sm' size='sm' ></Burger>
         <img height='40px' src='./mobifone.png'></img>
-        <Button size='xs' onClick={toggleColorScheme} variant="gradient" gradient={{ from: 'blue', to: 'cyan', deg: 90 }} >
+          <Button>Hello</Button>
+        <Button size='xs' radius={50} onClick={toggleColorScheme} variant="gradient" gradient={{ from: 'blue', to: 'cyan', deg: 90 }} >
           {computedColorScheme === 'dark' ? <IconSun /> : <IconMoon />}
 
         </Button>
