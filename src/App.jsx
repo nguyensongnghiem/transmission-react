@@ -10,11 +10,12 @@ import Header from './components/Header';
 import Navbar from './components/Navbar';
 import { Route, Routes } from 'react-router-dom';
 import SiteList from './components/SiteList';
+import SiteCreate from "./components/SiteCreate.jsx";
 
 function App() {
   const [opened, { toggle }] = useDisclosure()
   
-  const { setColorScheme } = useMantineColorScheme()
+  const { setColorScheme } = useMantineColorScheme({keepTransitions: true})
   const computedColorScheme = useComputedColorScheme('dark')
 
   console.log(computedColorScheme)
@@ -30,11 +31,12 @@ function App() {
       footer={{ height: 30 }}
     >
       <Header opened={opened} toggle={toggle} />
-      <Navbar toggle={toggle}/>
+      <Navbar toggle={toggle } computedColorScheme={computedColorScheme}/>
       <AppShell.Main>
         <Routes>
           <Route path='/dashboard' element={<h1>Dashboard</h1>} />       
-          <Route path='/sites' element={<SiteList />} />  
+          <Route path='/site' element={<SiteList />} />
+          <Route path='/site/create' element={<SiteCreate />} />
         </Routes>
       </AppShell.Main>
       <AppShell.Footer>Copyright @ Nguyễn Song Nghiêm</AppShell.Footer>

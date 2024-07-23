@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react'
 import * as siteService from '../services/SiteService'
-import { Table, Box, Button, Paper } from '@mantine/core'
+import { Box, Button, Paper } from '@mantine/core'
 import { mkConfig, generateCsv, download } from 'export-to-csv'; //or use your library of choice here
 import { useMemo } from 'react';
 import { IconDownload, IconPlus } from '@tabler/icons-react';
 import { MantineReactTable, useMantineReactTable, } from 'mantine-react-table';
 import { Link } from 'react-router-dom';
-import { flattenObject } from '../utils/flattenObj';
 import { flatten } from 'flat'
 function SiteList() {
     const [siteList, setSiteList] = useState([])
@@ -94,10 +93,21 @@ function SiteList() {
         const csv = generateCsv(csvConfig)(flattenList)
         download(csvConfig)(csv)
     }
+    const handleExportRows = (rows) => {
+
+        const rowData = rows.map((row) => row.original);
+        const flattenList = rowData.map((site) => {
+            return flatten(site)
+        })
+        const csv = generateCsv(csvConfig)(flattenList);
+        console.log(rows)
+        download(csvConfig)(csv);
+    };
 
     const table = useMantineReactTable({
         columns,
         data: siteList,
+        columnFilterDisplayMode:'subheader',
         paginationDisplayMode: 'pages',
         mantineTableProps: {
             striped: true,
@@ -120,8 +130,6 @@ function SiteList() {
 
         renderTopToolbarCustomActions: ({ table }) => (
             <>
-
-
                 <Box
                     style={{
                         display: 'flex',
@@ -136,41 +144,23 @@ function SiteList() {
                         //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
                         onClick={handleExportData}
                         leftSection={<IconDownload />}
-                        variant="outline"
+                        variant="filled"
                     >
                         Export CSV
                     </Button>
-                    {/* <Button
-                disabled={table.getPrePaginationRowModel().rows.length === 0}
+                    <Button
+                disabled={table.getRowModel().rows.length === 0}
                 //export all rows, including from the next page, (still respects filtering and sorting)
                 onClick={() =>
-                  handleExportRows(table.getPrePaginationRowModel().rows)
+                  handleExportRows(table.getRowModel().rows)
                 }
+                size='xs'
                 leftSection={<IconDownload />}
                 variant="filled"
               >
-                Export All Rows
+                Export filtered
               </Button>
-              <Button
-                disabled={table.getRowModel().rows.length === 0}
-                //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
-                onClick={() => handleExportRows(table.getRowModel().rows)}
-                leftSection={<IconDownload />}
-                variant="filled"
-              >
-                Export Page Rows
-              </Button>
-              <Button
-                disabled={
-                  !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
-                }
-                //only export selected rows
-                onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
-                leftSection={<IconDownload />}
-                variant="filled"
-              >
-                Export Selected Rows
-              </Button> */}
+
                 </Box>
             </>
         ),
@@ -186,7 +176,7 @@ function SiteList() {
                 variant="filled"
                 my={10}               
                 component={Link}
-                to='/dashboard'
+                to='/site/create'
             >
               Thêm mới
             </Button>

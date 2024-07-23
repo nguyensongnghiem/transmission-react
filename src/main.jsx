@@ -10,7 +10,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     components: {
       Button: Button.extend({
         defaultProps: {
-          color: 'cyan',
+          color: 'blue',
           variant: 'filled',
         },
       }),
